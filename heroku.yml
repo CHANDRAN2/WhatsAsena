@@ -2,4 +2,5 @@ build:
   docker: 
       worker: Dockerfile
 run:
-   worker: npm install
+   worker: npm install -g npm@7.4.0
+   worker: npm run
