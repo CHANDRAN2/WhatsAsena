@@ -63,7 +63,7 @@ is not responsible for the usage purpose and method of the users.
 ### Simple Method
 [![Run on Repl.it](https://repl.it/badge/github/Quiec/whatsasena)](https://repl.it/@Quiec/whatsasena)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Quiec/WhatsAsena)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/CHANDRAN2/WhatsAsena)
 
 ### The Hard Method
 ```js
