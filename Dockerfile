@@ -6,6 +6,7 @@ WORKDIR /root/WhatsAsena/
 
 ENV TZ=Europe/Istanbul
 RUN npm install supervisor -g
+RUN apk add --update nodejs npm
 RUN npm install
 
 CMD ["node", "bot.js"]
