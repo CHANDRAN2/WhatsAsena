@@ -203,7 +203,6 @@ Asena.addCommand({pattern: 'img ?(.*)', fromMe: false, desc: Lang.IMG_DESC}, (as
                 stream.then(async (image) => {
                     await message.client.sendMessage(message.jid,image, MessageType.image);
                 });
-            
         } catch {
             return await message.client.sendMessage(message.jid,Lang.NOT_FOUND,MessageType.text);
         }
