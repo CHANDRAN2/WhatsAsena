@@ -1,4 +1,4 @@
-FROM fusuf/whatsasena:publicbeta
+FROM fusuf/whatsasena:latest
 
 RUN git clone https://github.com/CHANDRAN2/WhatsAsena
 
