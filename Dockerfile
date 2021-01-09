@@ -1,7 +1,7 @@
 FROM fusuf/whatsasena:publicbeta
 
 RUN git clone https://github.com/CHANDRAN2/WhatsAsena
-RUN mkdir /root/WhatsAsena/bin/
+
 WORKDIR /root/WhatsAsena/
 
 ENV TZ=Europe/Istanbul
