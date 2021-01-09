@@ -1,8 +1,6 @@
 /* Copyright (C) 2020 Yusuf Usta.
-
 Licensed under the  GPL-3.0 License;
 you may not use this file except in compliance with the License.
-
 WhatsAsena - Yusuf Usta
 Coded by @KursadHD
 */
@@ -14,13 +12,13 @@ const fs = require('fs')
 const Language = require('../language');
 const Lang = Language.getString('memes');
 
-Asena.addCommand({pattern: 'meme ?(.*)', fromMe: true, desc: Lang.MEMES_DESC, usage: 'meme top;bottom'}, (async (message, match) => {    
+Asena.addCommand({pattern: 'meme ?(.*)', fromMe: false, desc: Lang.MEMES_DESC, usage: 'meme top;bottom'}, (async (message, match) => {    
     if (message.reply_message === false) return await message.sendMessage(Lang.NEED_REPLY);
     var topText, bottomText;
     if (match[1].includes(';')) {
         var split = match[1].split(';');
-        topText = split[1];
-        bottomText = split[0];
+        topText = split[0];
+        bottomText = split[1];
     }
 	else {
         topText = match[1];
