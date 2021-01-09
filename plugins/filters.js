@@ -13,9 +13,13 @@ const FilterDb = require('./sql/filters');
 const Language = require('../language');
 const Lang = Language.getString('filters');
 
-Asena.addCommand({pattern: 'filter ?(.*)', fromMe: true, desc: Lang.FILTER_DESC, usage: '.filter "merhaba" "merhaba, nasılsın?"'}, (async (message, match) => {
-    match = match[1].match(/[\'\"\“](.*?)[\'\"\“]/gsm);
 
+Asena.addCommand({pattern: 'filter ?(.*)', fromMe: true, desc: Lang.FILTER_DESC, usage: '.filter "kelippa" "kennappiye🌚🇩🇪"'}, (async (message, match) => {
+    match = match[1].match(/[\'\"\“](.*?)[\'\"\“]/gsm);
+    //var grup = await message.client.groupMetadata(message.jid);
+    //var admn = await checkImAdmin(message, message.data.participant);
+    //if (!admn) return await message.sendMessage("```Hehe You are not an admin!🥲```");
+	
     if (match === null) {
         filtreler = await FilterDb.getFilter(message.jid);
         if (filtreler === false) {
@@ -34,10 +38,10 @@ Asena.addCommand({pattern: 'filter ?(.*)', fromMe: true, desc: Lang.FILTER_DESC,
     }
 }));
 
-Asena.addCommand({pattern: 'stop ?(.*)', fromMe: true, desc: Lang.STOP_DESC, usage: '.stop "hello"'}, (async (message, match) => {
+Asena.addCommand({pattern: 'stop ?(.*)', fromMe: true, desc: Lang.STOP_DESC, usage: '.stop "hi"'}, (async (message, match) => {
     match = match[1].match(/[\'\"\“](.*?)[\'\"\“]/gsm);
     if (match === null) {
-        return await message.client.sendMessage(message.jid,Lang.NEED_REPLY + '\n*Example:* ```.stop "hello"```',MessageType.text)
+        return await message.client.sendMessage(message.jid,Lang.NEED_REPLY + '\n*Example:* ```.stop "hi"```',MessageType.text)
     }
 
     del = await FilterDb.deleteFilter(message.jid, match[0].replace(/['"“]+/g, ''));
