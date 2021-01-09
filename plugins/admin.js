@@ -17,10 +17,10 @@ Asena.addCommand({pattern: 'ban ?(.*)', fromMe: false, onlyGroup: true, desc: La
     var im = await checkImAdmin(message);
     if (!im) return await message.client.sendMessage(message.jid,Lang.IM_NOT_ADMIN,MessageType.text);
     var admn = await checkImAdmin(message, message.data.participant);
-    if (!admn) return await message.sendMessage("You are not an admin");
+    if (!admn) return await message.sendMessage("```You are not an admin!🥲```");
 
     if (message.reply_message !== false) {
-       await message.client.sendMessage(message.jid,'@' + message.reply_message.data.participant.split('@')[0] + '```, ' + Lang.BANNED + '```', MessageType.text, {contextInfo: {mentionedJid: [message.reply_message.data.participant]}});
+       await message.client.sendMessage(message.jid,'@' + message.reply_message.data.participant.split('@')[0] + '```', + Lang.BANNED + '```', MessageType.text, {contextInfo: {mentionedJid: [message.reply_message.data.participant]}});
         await message.client.groupRemove(message.jid, [message.reply_message.data.participant]);
     } else if (message.reply_message === false && message.mention !== false) {
         var etiketler = '';
@@ -42,7 +42,7 @@ Asena.addCommand({pattern: 'add(?: |$)(.*)', fromMe: true, onlyGroup: true, dont
     var im = await checkImAdmin(message);
     if (!im) return await message.client.sendMessage(message.jid,Lang.IM_NOT_ADMIN,MessageType.text);
     var admn = await checkImAdmin(message, message.data.participant);
-    if (!admn) return await message.sendMessage("You are not an admin");
+    if (!admn) return await message.sendMessage("```You are not an admin!🥲```");
     
     if (match[1] !== '') {
         match[1].split(' ').map(async (user) => {
@@ -92,7 +92,7 @@ Asena.addCommand({pattern: 'demote ?(.*)', fromMe: false, onlyGroup: true, desc:
     var im = await checkImAdmin(message);
     if (!im) return await message.client.sendMessage(message.jid,Lang.IM_NOT_ADMIN,MessageType.text);
     var admn = await checkImAdmin(message, message.data.participant);
-    if (!admn) return await message.sendMessage("You are not an admin");
+    if (!admn) return await message.sendMessage("```You are not an admin!🥲```");
 
     if (message.reply_message !== false) {
         var checkAlready = await checkImAdmin(message, message.reply_message.data.participant.split('@')[0]);
@@ -124,7 +124,7 @@ Asena.addCommand({pattern: 'mute ?(.*)', fromMe: false, onlyGroup: true, desc: L
     var im = await checkImAdmin(message);
     if (!im) return await message.client.sendMessage(message.jid,Lang.IM_NOT_ADMIN,MessageType.text);
     var admn = await checkImAdmin(message, message.data.participant);
-    if (!admn) return await message.sendMessage("You are not an admin");
+    if (!admn) return await message.sendMessage("```You are not an admin!🥲```");
     await message.client.groupSettingChange(message.jid, GroupSettingChange.messageSend, true);
     await message.client.sendMessage(message.jid,Lang.MUTED,MessageType.text);
 }));
@@ -151,7 +151,7 @@ Asena.addCommand({pattern: 'invite ?(.*)', fromMe: false, onlyGroup: true, desc:
     var im = await checkImAdmin(message);
     if (!im) return await message.client.sendMessage(message.jid,Lang.IM_NOT_ADMIN,MessageType.text);
     var admn = await checkImAdmin(message, message.data.participant);
-    if (!admn) return await message.sendMessage("You are not an admin");
+    if (!admn) return await message.sendMessage("```You are not an admin!🥲```");
     var invite = await message.client.groupInviteCode(message.jid);
     await message.client.sendMessage(message.jid,Lang.INVITE + ' https://chat.whatsapp.com/' + invite, MessageType.text);
 }));
