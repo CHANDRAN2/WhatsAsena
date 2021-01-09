@@ -168,7 +168,7 @@ Asena.addCommand({pattern: 'delete ?(.*)', fromMe: false, onlyGroup: true, desc:
     if (!admn) return await message.sendMessage("```Hehe You are not an admin!🥲```");
     var invite = await message.client.groupInviteCode(message.jid);
     if (message.reply_message === false) return await message.sendMessage('```Reply to a Message!```')
-    if (message.reply_message === true) return await message.client.deleteMessage(message.jid, fromMe: true})
+    if (message.reply_message === true) return await message.client.deleteMessage(message.jid, fromMe: true});
     
 }));
 
