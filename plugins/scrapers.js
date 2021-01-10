@@ -195,9 +195,9 @@ Asena.addCommand({pattern: 'wiki ?(.*)', fromMe: false, desc: Lang.WIKI_DESC}, (
 Asena.addCommand({pattern: 'img ?(.*)', fromMe: false, desc: Lang.IMG_DESC}, (async (message, match) => { 
     if (match[1] === '') return await message.client.sendMessage(message.jid,Lang.NEED_WORDS,MessageType.text);
     gis(match[1], async (error, result) => {
-        if(error) await message.client.sendMessage(message.jid,'```Error Creating Meme!```', MessageType.text);
-        if(!error){
-                for (var i = 0; i < (result.length < 3 ? result.length : 3); i++) {
+        for (var i = 0; i < (result.length < 3 ? result.length : 3); i++) {
+            if(error) await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);
+            if(!error){
                 var get = got(result[i].url, {https: {rejectUnauthorized: false}});
                 var stream = get.buffer();
                     
