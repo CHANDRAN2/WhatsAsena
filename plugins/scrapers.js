@@ -195,10 +195,12 @@ Asena.addCommand({pattern: 'wiki ?(.*)', fromMe: false, desc: Lang.WIKI_DESC}, (
 
 Asena.addCommand({pattern: 'img ?(.*)', fromMe: false, desc: Lang.IMG_DESC}, (async (message, match) => { 
     if (match[1] === '') return await message.client.sendMessage(message.jid,Lang.NEED_WORDS,MessageType.text);
-    gis(match[1], async (error, result) => {
+    gis(match[1], async (err, result) => {
+        if(err) await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);
+        
         for (var i = 0; i < (result.length < 3 ? result.length : 3); i++) {
-            if(error) await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);
-            if(!error){
+            
+            if(!err){
                 var get = got(result[i].url, {https: {rejectUnauthorized: false}});
                 var stream = get.buffer();
                     
