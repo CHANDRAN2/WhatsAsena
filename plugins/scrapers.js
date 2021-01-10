@@ -189,22 +189,19 @@ Asena.addCommand({pattern: 'wiki ?(.*)', fromMe: false, desc: Lang.WIKI_DESC}, (
 
 Asena.addCommand({pattern: 'img ?(.*)', fromMe: false, desc: Lang.IMG_DESC}, (async (message, match) => { 
     if (match[1] === '') return await message.client.sendMessage(message.jid,Lang.NEED_WORDS,MessageType.text);
-    gis(match[1], async (error, result) => {
-        if(!error){
-            for (var i = 0; i < (result.length < 3 ? result.length : 3); i++) {
+    gis(match[1], async (_error, result) => {
+        for (var i = 0; i < (result.length < 3 ? result.length : 3); i++) {
+            try {
                 var get = got(result[i].url, {https: {rejectUnauthorized: false}});
                 var stream = get.buffer();
                     
                 stream.then(async (image) => {
                     await message.client.sendMessage(message.jid,image, MessageType.image);
                 });
-                
-            }
-            message.reply(Lang.IMG.format((result.length < 3 ? result.length : 3), match[1]));
+        } catch (_error) {
+            await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);  
         }
-        if(error){
-            await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);
         }
-        //message.reply(Lang.IMG.format((result.length < 3 ? result.length : 3), match[1]));
+        message.reply(Lang.IMG.format((result.length < 3 ? result.length : 3), match[1]));
     });
 }));
