@@ -198,12 +198,10 @@ Asena.addCommand({pattern: 'img ?(.*)', fromMe: true, desc: Lang.IMG_DESC}, (asy
                 stream.then(async (image) => {
                     await message.client.sendMessage(message.jid,image, MessageType.image);
                 });
-
+                message.reply(Lang.IMG.format((result.length < 3 ? result.length : 3), match[1]));
             }
         } catch {
             return await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);
         }
-
-        message.reply(Lang.IMG.format((result.length < 3 ? result.length : 3), match[1]));
     });
 }));
