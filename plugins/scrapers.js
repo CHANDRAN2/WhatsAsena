@@ -56,17 +56,19 @@ Asena.addCommand({pattern: 'currency(?: ([0-9.]+) ([a-zA-Z]+) ([a-zA-Z]+)|$|(.*)
     if(match[1] === undefined || match[2] == undefined || match[3] == undefined) {
         return await message.client.sendMessage(message.jid,Lang.CURRENCY_ERROR,MessageType.text);
     }
+    Number.prototype.round = function(p) {
+        p = p || 10;
+    return parseFloat( this.toFixed(p) );
+    };
     let opts = {
         amount: parseFloat(match[1]).toFixed(2).replace(/\.0+$/,''),
         from: match[2].toUpperCase(),
         to: match[3].toUpperCase()
     }
     try {
-        
         result = await exchangeRates().latest().symbols([opts.to]).base(opts.from).fetch()
         result = parseFloat(result).toFixed(2).replace(/\.0+$/,'')
         result = result*opts.amount
-        result = result.round(3)
         await message.reply(`\`\`\`${opts.amount} ${opts.from} = ${result} ${opts.to}\`\`\``)
     }
     catch(err) {
