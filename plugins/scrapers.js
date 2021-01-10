@@ -1,11 +1,3 @@
-/* Copyright (C) 2020 Yusuf Usta.
-
-Licensed under the  GPL-3.0 License;
-you may not use this file except in compliance with the License.
-
-WhatsAsena - Yusuf Usta
-*/
-
 const Asena = require('../events');
 const {MessageType,Mimetype} = require('@adiwajshing/baileys');
 const translatte = require('translatte');
@@ -56,10 +48,6 @@ Asena.addCommand({pattern: 'currency(?: ([0-9.]+) ([a-zA-Z]+) ([a-zA-Z]+)|$|(.*)
     if(match[1] === undefined || match[2] == undefined || match[3] == undefined) {
         return await message.client.sendMessage(message.jid,Lang.CURRENCY_ERROR,MessageType.text);
     }
-    Number.prototype.round = function(p) {
-        p = p || 10;
-    return parseFloat( this.toFixed(p) );
-    };
     let opts = {
         amount: parseFloat(match[1]).toFixed(2).replace(/\.0+$/,''),
         from: match[2].toUpperCase(),
@@ -67,8 +55,9 @@ Asena.addCommand({pattern: 'currency(?: ([0-9.]+) ([a-zA-Z]+) ([a-zA-Z]+)|$|(.*)
     }
     try {
         result = await exchangeRates().latest().symbols([opts.to]).base(opts.from).fetch()
-        result = parseFloat(result).toFixed(2).replace(/\.0+$/,'')
+        //result = parseFloat(result).toFixed(2).replace(/\.0+$/,'')
         result = result*opts.amount
+        result = result.toFixed(2)
         await message.reply(`\`\`\`${opts.amount} ${opts.from} = ${result} ${opts.to}\`\`\``)
     }
     catch(err) {
@@ -80,6 +69,7 @@ Asena.addCommand({pattern: 'currency(?: ([0-9.]+) ([a-zA-Z]+) ([a-zA-Z]+)|$|(.*)
         }
     }
 }));
+
 
 Asena.addCommand({pattern: 'tts (.*)', fromMe: false, desc: Lang.TTS_DESC}, (async (message, match) => {
     if(match[1] === undefined || match[1] == "")
@@ -195,6 +185,24 @@ Asena.addCommand({pattern: 'wiki ?(.*)', fromMe: false, desc: Lang.WIKI_DESC}, (
     var info = await arama.rawContent();
     await message.client.sendMessage(message.jid, info, MessageType.text);
     await reply.delete();
+}));
+
+Asena.addCommand({pattern: 'img ?(.*)', fromMe: false, desc: Lang.IMG_DESC}, (async (message, match) => { 
+    if (match[1] === '') return await message.client.sendMessage(message.jid,Lang.NEED_WORDS,MessageType.text);
+    gis(match[1], async (err, result) => {
+        
+        for (var i = 0; i < (result.length < 3 ? result.length : 3); i++) {
+            var get = got(result[i].url, {https: {rejectUnauthorized: false}});
+            var stream = get.buffer();
+            if(err) await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);
+            if(!err){        
+                stream.then(async (image) => {
+                    await message.client.sendMessage(message.jid,image, MessageType.image);
+                });
+            }
+        }
+            message.reply(Lang.IMG.format((result.length < 3 ? result.length : 3), match[1]));
+    });
 }));
 
 Asena.addCommand({pattern: 'img ?(.*)', fromMe: true, desc: Lang.IMG_DESC}, (async (message, match) => { 
