@@ -64,6 +64,7 @@ Asena.addCommand({pattern: 'currency(?: ([0-9.]+) ([a-zA-Z]+) ([a-zA-Z]+)|$|(.*)
     try {
         result = await exchangeRates().latest().symbols([opts.to]).base(opts.from).fetch()
         result = parseFloat(result).toFixed(2).replace(/\.0+$/,'')
+        result = result*opts.amount
         await message.reply(`\`\`\`${opts.amount} ${opts.from} = ${result} ${opts.to}\`\`\``)
     }
     catch(err) {
