@@ -122,7 +122,7 @@
         },
         "memes": {
             "MEMES_DESC": "Photo memes you replied to.",
-            "NEED_REPLY": "*Reply to a photo!*",
+            "NEED_REPLY": "```Reply to a Something!```",
             "DOWNLOADING": "```Downloading media & making meme...```"
         },
         "ocr": {
