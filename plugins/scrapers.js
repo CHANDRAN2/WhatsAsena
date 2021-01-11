@@ -191,7 +191,7 @@ Asena.addCommand({pattern: 'img ?(.*)', fromMe: false, desc: Lang.IMG_DESC}, (as
     if (match[1] === '') return await message.client.sendMessage(message.jid,Lang.NEED_WORDS,MessageType.text);
     gis(match[1], async (error, result) => {
         for (var i = 0; i < (result.length < 3 ? result.length : 3); i++) {
-            var get = got(result[i].url, {https: {rejectUnauthorized: false}});
+            var get = got(result[i].url, {https: {rejectUnauthorized: true}});
             var stream = get.buffer();
             try{   
             stream.then(async (image) => {
