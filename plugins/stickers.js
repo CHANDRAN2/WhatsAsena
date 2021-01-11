@@ -18,6 +18,7 @@ const Lang = Language.getString('sticker');
 
 Asena.addCommand({pattern: 'sticker', fromMe: false, desc: Lang.STICKER_DESC}, (async (message, match) => {    
     if (message.reply_message === false) return await message.sendMessage(Lang.NEED_REPLY);
+    if (message.reply_message.text === true) return await message.sendMessage('```Reply to a Image, GIF or a Short Video```');
     var downloading = await message.client.sendMessage(message.jid,Lang.DOWNLOADING,MessageType.text);
     var location = await message.client.downloadAndSaveMediaMessage({
         key: {
