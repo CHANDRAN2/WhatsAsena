@@ -13,7 +13,7 @@ const sql = require('./sql/greetings');
 const Language = require('../language');
 const Lang = Language.getString('greetings');
 
-const Lang = Language.getString('admin');
+//const Lang = Language.getString('admin');
 
 async function checkImAdmin(message, user = message.client.user.jid) {
     var grup = await message.client.groupMetadata(message.jid);
