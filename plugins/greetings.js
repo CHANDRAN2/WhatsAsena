@@ -13,6 +13,16 @@ const sql = require('./sql/greetings');
 const Language = require('../language');
 const Lang = Language.getString('greetings');
 
+const Lang = Language.getString('admin');
+
+async function checkImAdmin(message, user = message.client.user.jid) {
+    var grup = await message.client.groupMetadata(message.jid);
+    var sonuc = grup['participants'].map((member) => {
+        if (member.id.split('@')[0] === user.split('@')[0] && member.isAdmin) return true; else; return false;
+    });
+    return sonuc.includes(true);
+}
+
 Asena.addCommand({pattern: 'welcome$', fromMe: true, desc: Lang.WELCOME_DESC}, (async (message, match) => {
     var hg = await sql.getMessage(message.jid);
     if (hg === false) {
@@ -23,6 +33,12 @@ Asena.addCommand({pattern: 'welcome$', fromMe: true, desc: Lang.WELCOME_DESC}, (
 }));
 
 Asena.addCommand({pattern: 'welcome (.*)', fromMe: true, dontAddCommandList: true}, (async (message, match) => {
+    var grup = await message.client.groupMetadata(message.jid);
+    var im = await checkImAdmin(message);
+    if (!im) return await message.client.sendMessage(message.jid,Lang.IM_NOT_ADMIN,MessageType.text);
+    var admn = await checkImAdmin(message, message.data.participant);
+    if (!admn) return await message.sendMessage("```Hehe you are not an admin!🥲```");
+
     if (match[1] === '') {
         return await message.client.sendMessage(message.jid,Lang.NEED_WELCOME_TEXT);
     } else {
