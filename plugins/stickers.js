@@ -33,6 +33,7 @@ Asena.addCommand({pattern: 'sticker', fromMe: false, desc: Lang.STICKER_DESC}, (
             execFile(cwebp, [location, '-o', 'output.webp'], async err => {
                 if (err) {
                     return await message.sendMessage('```Reply to a Image, GIF or a Short Video```');
+                    //throw err
                 }
 
                 await message.sendMessage(fs.readFileSync('./output.webp'), MessageType.sticker);
