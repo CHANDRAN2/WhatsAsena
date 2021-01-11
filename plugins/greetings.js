@@ -58,6 +58,12 @@ Asena.addCommand({pattern: 'goodbye$', fromMe: true, desc: Lang.GOODBYE_DESC}, (
 }));
 
 Asena.addCommand({pattern: 'goodbye (.*)', fromMe: true, dontAddCommandList: true}, (async (message, match) => {
+    var grup = await message.client.groupMetadata(message.jid);
+    var im = await checkImAdmin(message);
+    if (!im) return await message.client.sendMessage(message.jid,Lang.IM_NOT_ADMIN,MessageType.text);
+    var admn = await checkImAdmin(message, message.data.participant);
+    if (!admn) return await message.sendMessage("```Hehe you are not an admin!🥲```");
+    
     if (match[1] === '') {
         return await message.client.sendMessage(message.jid,Lang.NEED_GOODBYE_TEXT,MessageType.text);
     } else {
