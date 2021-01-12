@@ -30,7 +30,7 @@ Asena.addCommand({pattern: 'ban ?(.*)', fromMe: false, onlyGroup: true, desc: La
          console.log(etiketler);
         });
 
-        await message.client.sendMessage(message.jid,'```'+etiketler+', ' + Lang.BANNED +'```', MessageType.text, {contextInfo: {mentionedJid: message.mention}});
+        await message.client.sendMessage(message.jid,'```'+etiketler+', ```' + Lang.BANNED, MessageType.text, {contextInfo: {mentionedJid: message.mention}});
         await message.client.groupRemove(message.jid, message.mention);
     } else {
         return await message.client.sendMessage(message.jid,Lang.GIVE_ME_USER,MessageType.text);
@@ -67,7 +67,7 @@ Asena.addCommand({pattern: 'promote ?(.*)', fromMe: false, onlyGroup: true, desc
             return await message.client.sendMessage(message.jid,Lang.ALREADY_PROMOTED, MessageType.text);
         }
 
-        await message.client.sendMessage(message.jid,'```'+'@' + message.reply_message.data.participant.split('@')[0] + Lang.PROMOTED+'```', MessageType.text, {contextInfo: {mentionedJid: [message.reply_message.data.participant]}});
+        await message.client.sendMessage(message.jid,'```'+'@' + message.reply_message.data.participant.split('@')[0]+'```'+ Lang.PROMOTED, MessageType.text, {contextInfo: {mentionedJid: [message.reply_message.data.participant]}});
         await message.client.groupMakeAdmin(message.jid, [message.reply_message.data.participant]);
     } else if (message.reply_message === false && message.mention !== false) {
         var etiketler = '';
@@ -80,7 +80,7 @@ Asena.addCommand({pattern: 'promote ?(.*)', fromMe: false, onlyGroup: true, desc
             etiketler += '@' + user.split('@')[0] + ',';
         });
 
-        await message.client.sendMessage(message.jid,etiketler + Lang.PROMOTED, MessageType.text, {contextInfo: {mentionedJid: message.mention}});
+        await message.client.sendMessage(message.jid,'```'+etiketler+'```'+ Lang.PROMOTED, MessageType.text, {contextInfo: {mentionedJid: message.mention}});
         await message.client.groupMakeAdmin(message.jid, message.mention);
     } else {
         return await message.client.sendMessage(message.jid,Lang.GIVE_ME_USER,MessageType.text);
@@ -113,7 +113,7 @@ Asena.addCommand({pattern: 'demote ?(.*)', fromMe: false, onlyGroup: true, desc:
             etiketler += '@' + user.split('@')[0] + ',';
         });
 
-        await message.client.sendMessage(message.jid,etiketler + Lang.DEMOTED, MessageType.text, {contextInfo: {mentionedJid: message.mention}});
+        await message.client.sendMessage(message.jid,'```'+etiketler+'```'+ Lang.DEMOTED, MessageType.text, {contextInfo: {mentionedJid: message.mention}});
         await message.client.groupDemoteAdmin(message.jid, message.mention);
     } else {
         return await message.client.sendMessage(message.jid,Lang.GIVE_ME_USER,MessageType.text);
