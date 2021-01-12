@@ -216,7 +216,7 @@
             "DESC": "Description",
             "HUMI": "Humidity",
             "WIND": "Wind Speed",
-            "CLOUD": "Cloud",
+            "CLOUD": "Clouds",
             "NOT_FOUND": "```I couldn't find a city with this name.🥲```"
         },
         "web": {
