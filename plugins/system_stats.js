@@ -40,3 +40,9 @@ Asena.addCommand({pattern: 'tossacoin', fromMe: false, desc: 'To Toss a Coin.', 
        "```Hehe it's ```"+'```'+coinface+'```' , MessageType.text
     );
 }));
+
+Asena.addCommand({pattern: 'today', fromMe: false, desc: 'Today.', usage: '.today'}, (async (message, match) => {
+    await message.sendMessage(
+       "```Heppy Berthdey Aadhi!🌚```" , MessageType.text
+    );
+}));
