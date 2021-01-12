@@ -35,7 +35,7 @@ Asena.addCommand({pattern: 'meme ?(.*)', fromMe: false, desc: Lang.MEMES_DESC, u
         bottomText: bottomText,
     }, async function(err) {
 	if(err) await message.client.sendMessage(message.jid,'```Reply to a Photo or Normal Sticker!```', MessageType.text);
-        if(err) throw new Error(err)
+        //if(err) throw new Error(err)
         if(!err){
 		await message.client.sendMessage(message.jid, fs.readFileSync('asena-meme.png'), MessageType.image, {filename: 'asena-meme.png', mimetype: Mimetype.png});
         	await info.delete();    
