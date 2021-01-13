@@ -100,7 +100,7 @@ Asena.addCommand({pattern: 'demote ?(.*)', fromMe: false, onlyGroup: true, desc:
             return await message.client.sendMessage(message.jid,Lang.ALREADY_NOT_ADMIN, MessageType.text);
         }
 
-        await message.client.sendMessage(message.jid,'```'+'@' + message.reply_message.data.participant.split('@')[0] + Lang.DEMOTED+'```', MessageType.text, {contextInfo: {mentionedJid: [message.reply_message.data.participant]}});
+        await message.client.sendMessage(message.jid,'```'+'@' + message.reply_message.data.participant.split('@')[0]+'```'+ Lang.DEMOTED, MessageType.text, {contextInfo: {mentionedJid: [message.reply_message.data.participant]}});
         await message.client.groupDemoteAdmin(message.jid, [message.reply_message.data.participant]);
     } else if (message.reply_message === false && message.mention !== false) {
         var etiketler = '';
