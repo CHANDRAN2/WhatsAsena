@@ -111,9 +111,9 @@ Asena.addCommand({pattern: 'song ?(.*)', fromMe: false, desc: Lang.SONG_DESC}, (
     got.stream(arama[0].image).pipe(fs.createWriteStream(title + '.jpg'));
     ffmpeg(stream)
         .audioBitrate(256)
-        .save('./' + title + '.mp3')
+        .save('./' + title + '.aac')
         .on('end', async () => {
-            const writer = new ID3Writer(fs.readFileSync('./' + title + '.mp3'));
+            const writer = new ID3Writer(fs.readFileSync('./' + title + '.aac'));
             writer.setFrame('TIT2', arama[0].title)
                 .setFrame('TPE1', [arama[0].author.name])
                 .setFrame('APIC', {
