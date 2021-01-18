@@ -20,7 +20,7 @@ Asena.addCommand({pattern: 'ban ?(.*)', fromMe: false, onlyGroup: true, desc: La
     if (!admn) return await message.sendMessage("```Hehe you are not an admin!🥲```");
 
     if (message.reply_message !== false) {
-       await message.client.sendMessage(message.jid,'```'+'@' + message.reply_message.data.participant.split('@')[0] +'```'+'```, ' + Lang.BANNED + '```', MessageType.text, {contextInfo: {mentionedJid: [message.reply_message.data.participant]}});
+       await message.client.sendMessage(message.jid,'```'+'@' + message.reply_message.data.participant.split('@')[0] +', '+'```' + Lang.BANNED, MessageType.text, {contextInfo: {mentionedJid: [message.reply_message.data.participant]}});
         await message.client.groupRemove(message.jid, [message.reply_message.data.participant]);
     } else if (message.reply_message === false && message.mention !== false) {
         var etiketler = '';
