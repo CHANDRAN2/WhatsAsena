@@ -76,7 +76,7 @@ Asena.addCommand({pattern: 'tts (.*)', fromMe: false, desc: Lang.TTS_DESC}, (asy
         return; 
     
     let 
-        LANG = Config.LANG.toLowerCase(), 
+        LANG = config.LANG.toLowerCase(), 
         ttsMessage = match[1], 
         SPEED = 1.0 
     
