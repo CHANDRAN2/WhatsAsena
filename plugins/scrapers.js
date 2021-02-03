@@ -210,3 +210,75 @@ Asena.addCommand({pattern: 'img ?(.*)', fromMe: true, desc: Lang.IMG_DESC}, (asy
         message.reply(Lang.IMG.format((result.length < 3 ? result.length : 3), match[1]));
     });
 }));
+
+const request = require('request-promise');
+const fs = require('fs');
+const cheerio = require('cheerio');
+const _ = require('lodash');
+const Asena = require('../events');
+const {MessageType,Mimetype} = require('@adiwajshing/baileys');
+
+function isUrl(urlOrMediaId) {
+  return urlOrMediaId.substring(0, 8) === 'https://' || urlOrMediaId.substring(0, 7) === 'http://';
+}
+
+ function createUrl(urlOrMediaId) {
+  return  isUrl(urlOrMediaId) ? urlOrMediaId : `https://www.instagram.com/p/${urlOrMediaId}/`;
+}
+
+ function createFilename(mediaId, mimeType) {
+  const mimeTypeToExtensionMap = {
+    'image/jpeg': '.jpg',
+    'video/mp4': '.mp4',
+    'video/ogg': '.ogg',
+    'video/webm': '.webm'
+  };
+
+  const extension = _.get(mimeTypeToExtensionMap, mimeType);
+
+  return `${mediaId}${extension}`;
+}
+function Sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds))
+}
+
+Asena.addCommand({pattern: 'insta ?(.*)', fromMe: false}, (async (message, match, downloadAndSave) => {
+
+async  function save(urlOrMediaId, dir) {
+const url =  createUrl(urlOrMediaId)
+
+console.log('save')
+   const a = request.get({
+      url,
+      transform(body) {
+        return cheerio.load(body);
+      }
+    }).catch(console.log('err'))
+      .then($ => {
+        const canonicalUrl = $('link[rel="canonical"]').attr('href');
+        const isVideo = $('meta[name="medium"]').attr('content') === 'video';
+        const mimeType = isVideo ? $('meta[property="og:video:type"]').attr('content') : 'image/jpeg';
+        const partsOfCanonicalurl = canonicalUrl.split('/');
+        const indexOfP = partsOfCanonicalurl.indexOf('p');
+        const mediaId = partsOfCanonicalurl[indexOfP + 1];
+        const filename = createFilename(mediaId, mimeType);
+        const downloadUrl = isVideo ? $('meta[property="og:video"]').attr('content') : $('meta[property="og:image"]').attr('content')
+     
+
+request.head(downloadUrl, (err, res, body) => {
+          request(downloadUrl).pipe(fs.createWriteStream(filename))
+        .on('finish', () => {
+ if(isVideo === false){
+message.client.sendMessage(message.jid,fs.readFileSync(filename), MessageType.image, {quoted: message.data});
+
+ }else if(res.label === true){
+message.client.sendMessage(message.jid,fs.readFileSync(filename), MessageType.video, {quoted: message.data});}
+});
+}); 
+});
+}
+
+url = match[1];
+console.log(url)
+save(url, './')
+}));
