@@ -42,6 +42,7 @@
     "meme-maker": "^2.1.2",
     "node-tesseract-ocr": "^2.0.0",
     "pg": "^8.5.1",
+    "request-promise": "^4.2.6"
     "sequelize": "^6.3.5",
     "simple-git": "^2.22.0",
     "sozlukjs": "^1.1.0",
