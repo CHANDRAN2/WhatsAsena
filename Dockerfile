@@ -10,7 +10,7 @@ RUN apk --no-cache --virtual build-dependencies add \
     python \
     make \
     g++ \
-    && npm install \
+    && npm install -g npm@7.6.0 \
     && apk del build-dependencies
 
 CMD ["node", "bot.js"]
