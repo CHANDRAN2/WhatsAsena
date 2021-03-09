@@ -41,7 +41,7 @@ Asena.addCommand({pattern: 'tossacoin', fromMe: false, desc: 'To Toss a Coin.', 
     );
 }));
 
-Asena.addCommand({pattern: 'today', fromMe: false, desc: 'Today.', usage: '.today'}, (async (message, match) => {
+Asena.addCommand({pattern: 'today', fromMe: true, desc: 'Today.', usage: '.today'}, (async (message, match) => {
     await message.sendMessage(
        "```Heppy Berthdey Aadhi!🌚```" , MessageType.text
     );
