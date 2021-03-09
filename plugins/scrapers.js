@@ -193,7 +193,7 @@ Asena.addCommand({pattern: 'img ?(.*)', fromMe: true, desc: Lang.IMG_DESC}, (asy
                     await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);
                     throw err;
         }
-        //if(error) await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);
+        if(error) await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);
         for (var i = 0; i < (result.length < 3 ? result.length : 3); i++) {
             var get = got(result[i].url, {https: {rejectUnauthorized: false}});
             var stream = get.buffer();
