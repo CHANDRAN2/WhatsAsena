@@ -38,13 +38,13 @@ Asena.addCommand({pattern: 'trt(?: |$)(\\S*) ?(\\S*)', desc: Lang.TRANSLATE_DESC
     if ('text' in ceviri) {
         return await message.reply('*▶️ ' + Lang.LANG + ':* ```' + (match[1] === '' ? 'auto' : match[1]) + '```\n'
         + '*◀️ ' + Lang.FROM + '*: ```' + (match[2] === '' ? config.LANG : match[2]) + '```\n'
-        + '*🔎 ' + Lang.RESULT + '*: ```' + ceviri.text + '```');
+        + '*🔎 ' + Lang.RESULT + ':* ```' + ceviri.text + '```');
     } else {
         return await message.client.sendMessage(message.jid,Lang.TRANSLATE_ERROR,MessageType.text)
     }
 }));
 
-Asena.addCommand({pattern: 'currency(?: ([0-9.]+) ([a-zA-Z]+) ([a-zA-Z]+)|$|(.*))', fromMe: false}, (async (message, match) => {
+Asena.addCommand({pattern: 'currency(?: ([0-9.]+) ([a-zA-Z]+) ([a-zA-Z]+)|$|(.*))', fromMe: true}, (async (message, match) => {
     if(match[1] === undefined || match[2] == undefined || match[3] == undefined) {
         return await message.client.sendMessage(message.jid,Lang.CURRENCY_ERROR,MessageType.text);
     }
@@ -55,9 +55,7 @@ Asena.addCommand({pattern: 'currency(?: ([0-9.]+) ([a-zA-Z]+) ([a-zA-Z]+)|$|(.*)
     }
     try {
         result = await exchangeRates().latest().symbols([opts.to]).base(opts.from).fetch()
-        //result = parseFloat(result).toFixed(2).replace(/\.0+$/,'')
-        result = result*opts.amount
-        result = result.toFixed(2)
+        result = parseFloat(result).toFixed(2).replace(/\.0+$/,'')
         await message.reply(`\`\`\`${opts.amount} ${opts.from} = ${result} ${opts.to}\`\`\``)
     }
     catch(err) {
@@ -70,29 +68,29 @@ Asena.addCommand({pattern: 'currency(?: ([0-9.]+) ([a-zA-Z]+) ([a-zA-Z]+)|$|(.*)
     }
 }));
 
-
 Asena.addCommand({pattern: 'tts (.*)', fromMe: false, desc: Lang.TTS_DESC}, (async (message, match) => {
-    if(match[1] === undefined || match[1] == "") 
-        return; 
+    if(match[1] === undefined || match[1] == "")
+        return;
     
     let 
-        LANG = config.LANG.toLowerCase(), 
-        ttsMessage = match[1], 
-        SPEED = 1.0 
-    
+        LANG = config.LANG,
+        ttsMessage = match[1],
+        SPEED = 1.0
+
     if(langMatch = match[1].match("\\{([a-z]{2})\\}")) {
-        LANG = langMatch[1] 
+        LANG = langMatch[1]
         ttsMessage = ttsMessage.replace(langMatch[0], "")
     } 
     if(speedMatch = match[1].match("\\{([0].[0-9]+)\\}")) {
-        SPEED = parseFloat(speedMatch[1]) 
-        ttsMessage = ttsMessage.replace(speedMatch[0], "") 
-    } 
-    var buffer = await googleTTS.synthesize({ 
-        text: ttsMessage, 
-        voice: LANG 
-    }); 
-    await message.client.sendMessage(message.jid,buffer, MessageType.audio, {mimetype: Mimetype.mp4Audio, ptt: true}); 
+        SPEED = parseFloat(speedMatch[1])
+        ttsMessage = ttsMessage.replace(speedMatch[0], "")
+    }
+    
+    var buffer = await googleTTS.synthesize({
+        text: ttsMessage,
+        voice: LANG
+    });
+    await message.client.sendMessage(message.jid,buffer, MessageType.audio, {mimetype: Mimetype.mp4Audio, ptt: true});
 }));
 
 Asena.addCommand({pattern: 'song ?(.*)', fromMe: false, desc: Lang.SONG_DESC}, (async (message, match) => { 
@@ -123,7 +121,7 @@ Asena.addCommand({pattern: 'song ?(.*)', fromMe: false, desc: Lang.SONG_DESC}, (
             writer.addTag();
 
             reply = await message.client.sendMessage(message.jid,Lang.UPLOADING_SONG,MessageType.text);
-            await message.client.sendMessage(message.jid,Buffer.from(writer.arrayBuffer), MessageType.audio, {mimetype: Mimetype.mp3, ptt: false});
+            await message.client.sendMessage(message.jid,Buffer.from(writer.arrayBuffer), MessageType.audio, {mimetype: Mimetype.mp4Audio, ptt: false});
         });
 }));
 
@@ -159,7 +157,7 @@ Asena.addCommand({pattern: 'yt ?(.*)', fromMe: false, desc: Lang.YT_DESC}, (asyn
     
     var mesaj = '';
     arama.all.map((video) => {
-        mesaj += '```' + video.title + ' - ' + video.url + '```' + '\n\n'
+        mesaj += '*' + video.title + '* - ' + video.url + '\n'
     });
 
     await message.client.sendMessage(message.jid,mesaj,MessageType.text);
@@ -170,16 +168,8 @@ Asena.addCommand({pattern: 'wiki ?(.*)', fromMe: false, desc: Lang.WIKI_DESC}, (
     if (match[1] === '') return await message.client.sendMessage(message.jid,Lang.NEED_WORDS,MessageType.text);    
     var reply = await message.client.sendMessage(message.jid,Lang.SEARCHING,MessageType.text);
 
-    try {
-        var arama = await wiki({ apiUrl: 'https://' + config.LANG + '.wikipedia.org/w/api.php' })
-       .page(match[1]);
-
-    } catch {
-        return await message.client.sendMessage(message.jid,Lang.NOT_FOUND,MessageType.text);
-    }
-    
-//    var arama = await wiki({ apiUrl: 'https://' + config.LANG + '.wikipedia.org/w/api.php' })
-//    .page(match[1]);
+    var arama = await wiki({ apiUrl: 'https://' + config.LANG + '.wikipedia.org/w/api.php' })
+        .page(match[1]);
 
     var info = await arama.rawContent();
     await message.client.sendMessage(message.jid, info, MessageType.text);
@@ -189,96 +179,15 @@ Asena.addCommand({pattern: 'wiki ?(.*)', fromMe: false, desc: Lang.WIKI_DESC}, (
 Asena.addCommand({pattern: 'img ?(.*)', fromMe: true, desc: Lang.IMG_DESC}, (async (message, match) => { 
     if (match[1] === '') return await message.client.sendMessage(message.jid,Lang.NEED_WORDS,MessageType.text);
     gis(match[1], async (error, result) => {
-        if (error) {
-                    await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);
-                    throw err;
-        }
-        if(error) await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);
-        for (var i = 0; i < (result.length < 3 ? result.length : 3); i++) {
+        for (var i = 0; i < (result.length < 5 ? result.length : 5); i++) {
             var get = got(result[i].url, {https: {rejectUnauthorized: false}});
             var stream = get.buffer();
                 
             stream.then(async (image) => {
-                try {
-                    await message.client.sendMessage(message.jid,image, MessageType.image);
-                } catch {
-                    await message.client.sendMessage(message.jid,'```Error Fetching Images!```', MessageType.text);
-                }
+                await message.client.sendMessage(message.jid,image, MessageType.image);
             });
         }
 
-        message.reply(Lang.IMG.format((result.length < 3 ? result.length : 3), match[1]));
+        message.reply(Lang.IMG.format((result.length < 5 ? result.length : 5), match[1]));
     });
-}));
-
-const request = require('request-promise');
-const fs = require('fs');
-const cheerio = require('cheerio');
-const _ = require('lodash');
-const Asena = require('../events');
-const {MessageType,Mimetype} = require('@adiwajshing/baileys');
-
-function isUrl(urlOrMediaId) {
-  return urlOrMediaId.substring(0, 8) === 'https://' || urlOrMediaId.substring(0, 7) === 'http://';
-}
-
- function createUrl(urlOrMediaId) {
-  return  isUrl(urlOrMediaId) ? urlOrMediaId : `https://www.instagram.com/p/${urlOrMediaId}/`;
-}
-
- function createFilename(mediaId, mimeType) {
-  const mimeTypeToExtensionMap = {
-    'image/jpeg': '.jpg',
-    'video/mp4': '.mp4',
-    'video/ogg': '.ogg',
-    'video/webm': '.webm'
-  };
-
-  const extension = _.get(mimeTypeToExtensionMap, mimeType);
-
-  return `${mediaId}${extension}`;
-}
-function Sleep(milliseconds) {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds))
-}
-
-Asena.addCommand({pattern: 'insta ?(.*)', fromMe: false}, (async (message, match, downloadAndSave) => {
-
-async  function save(urlOrMediaId, dir) {
-const url =  createUrl(urlOrMediaId)
-
-console.log('save')
-   const a = request.get({
-      url,
-      transform(body) {
-        return cheerio.load(body);
-      }
-    }).catch(console.log('err'))
-      .then($ => {
-        const canonicalUrl = $('link[rel="canonical"]').attr('href');
-        const isVideo = $('meta[name="medium"]').attr('content') === 'video';
-        const mimeType = isVideo ? $('meta[property="og:video:type"]').attr('content') : 'image/jpeg';
-        const partsOfCanonicalurl = canonicalUrl.split('/');
-        const indexOfP = partsOfCanonicalurl.indexOf('p');
-        const mediaId = partsOfCanonicalurl[indexOfP + 1];
-        const filename = createFilename(mediaId, mimeType);
-        const downloadUrl = isVideo ? $('meta[property="og:video"]').attr('content') : $('meta[property="og:image"]').attr('content')
-     
-
-request.head(downloadUrl, (err, res, body) => {
-          request(downloadUrl).pipe(fs.createWriteStream(filename))
-        .on('finish', () => {
- if(isVideo === false){
-message.client.sendMessage(message.jid,fs.readFileSync(filename), MessageType.image, {quoted: message.data});
-
- }else if(res.label === true){
-message.client.sendMessage(message.jid,fs.readFileSync(filename), MessageType.video, {quoted: message.data});}
-});
-}); 
-});
-}
-
-url = match[1];
-console.log(url)
-save(url, './')
 }));
