@@ -16,7 +16,7 @@ const Lang = Language.getString('system_stats');
 
 Asena.addCommand({pattern: 'alive', fromMe: false, desc: Lang.ALIVE_DESC}, (async (message, match) => {
     await message.sendMessage(
-        '```Hehe I em elaiv.🌚```\n\n```Join Me:``` ```https://chat.whatsapp.com/BuQWwBFW26sHVyoMEi2Gl2```' , MessageType.text
+        '```Hehe I em elaiv.🌚```\n\n```Join Me:``` ```https://chat.whatsapp.com/C4Iy1AN9ExM1SMvoXApcZc```' , MessageType.text
     );
 }));
 
