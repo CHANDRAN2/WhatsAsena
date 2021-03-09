@@ -153,7 +153,8 @@ Asena.addCommand({pattern: 'yt ?(.*)', fromMe: false, desc: Lang.YT_DESC}, (asyn
     });
 
     await message.client.sendMessage(message.jid,mesaj,MessageType.text);
-	@@ -170,16 +168,8 @@ Asena.addCommand({pattern: 'wiki ?(.*)', fromMe: false, desc: Lang.WIKI_DESC}, (
+	
+Asena.addCommand({pattern: 'wiki ?(.*)', fromMe: false, desc: Lang.WIKI_DESC}, (
     if (match[1] === '') return await message.client.sendMessage(message.jid,Lang.NEED_WORDS,MessageType.text);    
     var reply = await message.client.sendMessage(message.jid,Lang.SEARCHING,MessageType.text);
 
