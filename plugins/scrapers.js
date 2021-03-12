@@ -118,7 +118,7 @@ Asena.addCommand({pattern: 'song ?(.*)', fromMe: false, desc: Lang.SONG_DESC}, (
             writer.addTag();
 
             reply = await message.client.sendMessage(message.jid,Lang.UPLOADING_SONG,MessageType.text);
-            await message.client.sendMessage(message.jid,Buffer.from(writer.arrayBuffer), MessageType.audio, {mimetype: Mimetype.mp3, ptt: false});
+            await message.client.sendMessage(message.jid,Buffer.from(writer.arrayBuffer), MessageType.audio, {mimetype: Mimetype.mp4Audio, ptt: false});
         });
 }));
 
